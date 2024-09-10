@@ -6,7 +6,7 @@
     </div >
 
     <div class="flex justify-evenly">
-      <DashboardCard/>
+      <DashboardCard title="clientes" value="120" :icon="IconComponent"/>
       <DashboardCard/>
       <DashboardCard/>
       <DashboardCard/>
@@ -17,4 +17,7 @@
 
 <script setup lang="ts">
   import DashboardCard from "../../components/dashboard/Card.vue";
+  import IconComponent from "../../components/dashboard/Icon.vue";
+
+
 </script>
