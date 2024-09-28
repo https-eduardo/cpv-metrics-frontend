@@ -1,5 +1,5 @@
 <template>
-  <div class="border rounded-md">
+  <div class="border rounded-md border-[#2D2D2D]">
     <Table>
       <TableHeader>
         <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
@@ -51,13 +51,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { columns, client_table } from './columns';
+
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }>()
 
 const table = useVueTable({
-  get data() { return props.data },
+  get data() { return client_table },
   get columns() { return props.columns },
   getCoreRowModel: getCoreRowModel(),
 })
