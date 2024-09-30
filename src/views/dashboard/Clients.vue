@@ -12,23 +12,14 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { columns } from '../../components/client-table/columns.ts'
-import { tableClient } from '../../components/client-table/columns.ts'
+import { columns, tableClient, client_table } from '../../components/client-table/columns.ts'
 import DataTable from '../../components/client-table/DataTable.vue'
 
 const data = ref<tableClient[]>([])
 
 async function getData(): Promise<tableClient[]> {
   // Fetch data from your API here.
-  return [
-    {
-      id: '728ed52f',
-      amount: 100,
-      status: 'pending',
-      email: 'm@example.com',
-    },
-    // ...
-  ]
+  return client_table
 }
 
 onMounted(async () => {

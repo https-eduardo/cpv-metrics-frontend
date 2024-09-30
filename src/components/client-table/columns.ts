@@ -1,10 +1,10 @@
 import { h } from 'vue';
 import { ColumnDef } from '@tanstack/vue-table';
 
-interface tableClient {
+export interface tableClient {
   id: string
   name: string
-  status: 'bandeira-verde' | 'bandeira-amarela' | 'bandeira-vermelha'
+  status: 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
   payment: number
   ltv: number 
   type: 'Tipo S' | 'Tipo A' | 'Tipo B' | 'Tipo C' 
@@ -16,7 +16,7 @@ export const client_table: tableClient[] = [
   {
     id: '01',
     name: 'Cliente 1',
-    status: 'bandeira-verde',
+    status: 'Bandeira Verde',
     payment: 316,
     ltv: 3160,
     type: 'Tipo A',
@@ -26,7 +26,7 @@ export const client_table: tableClient[] = [
   {
     id: '02',
     name: 'Cliente 2',
-    status: 'bandeira-amarela',
+    status: 'Bandeira Amarela',
     payment: 242,
     ltv: 3106,
     type: 'Tipo B',
@@ -36,7 +36,87 @@ export const client_table: tableClient[] = [
   {
     id: '03',
     name: 'Cliente 3',
-    status: 'bandeira-vermelha',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo C',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '04',
+    name: 'Cliente 4',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo B',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '05',
+    name: 'Cliente 5',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo S',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '06',
+    name: 'Cliente 6',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo A',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '07',
+    name: 'Cliente 7',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo A',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '08',
+    name: 'Cliente 8',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo C',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '08',
+    name: 'Cliente 8',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo C',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '08',
+    name: 'Cliente 8',
+    status: 'Bandeira Vermelha',
+    payment: 150,
+    ltv: 1500,
+    type: 'Tipo C',
+    startDate: '01/01/23',
+    finalDate: '01/01/24'
+  },
+  {
+    id: '08',
+    name: 'Cliente 8',
+    status: 'Bandeira Vermelha',
     payment: 150,
     ltv: 1500,
     type: 'Tipo C',
@@ -52,7 +132,7 @@ export const columns: ColumnDef<tableClient>[] = [
   },
   {
     accessorKey: 'name',
-    header: () => 'Name',
+    header: () => 'Nome',
   },
   {
     accessorKey: 'status',
@@ -60,7 +140,7 @@ export const columns: ColumnDef<tableClient>[] = [
   },
   {
     accessorKey: 'payment',
-    header: () => h('div', { class: 'text-left' }, 'Payment'),
+    header: () => h('div', { class: 'text-left' }, 'Mensalidade'),
     cell: ({ row }) => {
       const payment = Number.parseFloat(row.getValue('payment'));
       const formatted = new Intl.NumberFormat('pt-BR', {
@@ -73,17 +153,25 @@ export const columns: ColumnDef<tableClient>[] = [
   {
     accessorKey: 'ltv',
     header: () => 'LTV',
+    cell: ({ row }) => {
+      const ltv = Number.parseFloat(row.getValue('ltv'));
+      const formatted = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(ltv);
+      return h('div', { class: 'text-left font-medium' }, formatted);
+    },
   },
   {
     accessorKey: 'type',
-    header: () => 'Type',
+    header: () => 'Tipo',
   },
   {
     accessorKey: 'startDate',
-    header: () => 'Start Date',
+    header: () => 'Inicio Contrado',
   },
   {
     accessorKey: 'finalDate',
-    header: () => 'Final Date',
+    header: () => 'Final Contrato',
   },
 ];

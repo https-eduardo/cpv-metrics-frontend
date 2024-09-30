@@ -29,18 +29,48 @@
             </TableCell>
           </TableRow>
         </template>
-      </TableBody>
+      </TableBody>        
     </Table>
   </div>
+
+  <div>
+    <div class="flex items-center justify-end py-2 space-x-2 border-0">
+      <Button
+        variant="outline"
+        size="sm"
+        :disabled="!table.getCanPreviousPage()"
+        @click="table.previousPage()"
+        class="bg-[#B66CFF] disabled:opacity-75"
+      >
+        Back
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        :disabled="!table.getCanNextPage()"
+        @click="table.nextPage()"
+        class="bg-[#B66CFF] disabled:opacity-75"
+      >
+        Next
+      </Button>
+    </div>
+    <div class="text-center text-white">
+      Página {{ table.getState().pagination.pageIndex + 1 }} de {{ table.getPageCount() }}
+    </div>
+  </div>
+
 </template>
 
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table'
+import type { ColumnDef } from '@tanstack/vue-table';
+import { Button } from '@/components/ui/button';
+
 import {
-  FlexRender,
-  getCoreRowModel,
-  useVueTable,
-} from '@tanstack/vue-table'
+    FlexRender,
+    getCoreRowModel,
+    getPaginationRowModel,
+    useVueTable,
+} from "@tanstack/vue-table"
 
 import {
   Table,
@@ -49,9 +79,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/ui/table';
 
-import { columns, client_table } from './columns';
+import { 
+  columns, 
+} from './columns';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
@@ -59,8 +91,11 @@ const props = defineProps<{
 }>()
 
 const table = useVueTable({
-  get data() { return client_table },
-  get columns() { return props.columns },
-  getCoreRowModel: getCoreRowModel(),
+    get data() { return props.data },
+    get columns() { return props.columns },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel()
 })
+
+table.setPagination({ pageIndex: 0, pageSize: 5 })
 </script>
