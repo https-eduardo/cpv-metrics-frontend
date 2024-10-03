@@ -5,7 +5,6 @@
       <h1 class="text-2xl font-bold text-white">Clientes</h1>
     </div>  
     <div class="container py-10 mx-auto">
-    <DataTable :columns="columns" :data="data" />
   </div>
   </div>
 </template>
