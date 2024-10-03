@@ -12,15 +12,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { columns, tableClient, client_table } from '../../components/client-table/columns.ts'
-import DataTable from '../../components/client-table/DataTable.vue'
+import { columns, tableCustomer, data_customer } from '../../components/customer-table/columns.ts'
+import DataTable from '../../components/customer-table/DataTable.vue'
 
-const data = ref<tableClient[]>([])
+const data = ref<tableCustomer[]>([])
 
-async function getData(): Promise<tableClient[]> {
-  // Fetch data from your API here.
-  return client_table
+async function getData(): Promise<tableCustomer[]> {
+  return data_customer;
 }
+
 
 onMounted(async () => {
   data.value = await getData()

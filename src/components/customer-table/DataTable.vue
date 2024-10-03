@@ -55,22 +55,35 @@
       </Button>
     </div>
     <div class="text-center text-white">
-      Página {{ table.getState().pagination.pageIndex + 1 }} de {{ table.getPageCount() }}
+      Página {{ table.getState().pagination.pageIndex + 1}} de {{ table.getPageCount() }}
     </div>
   </div>
 
 </template>
 
 <script setup lang="ts" generic="TData, TValue">
-import type { ColumnDef } from '@tanstack/vue-table';
 import { Button } from '@/components/ui/button';
+import { valueUpdater } from '@/lib/utils';
+
+import { 
+  h, 
+  ref 
+} from 'vue';
+
+import { 
+  ArrowUpDown, 
+  ChevronDown
+} from 'lucide-vue-next';
 
 import {
+    ColumnDef, 
+    SortingState,
+    getSortedRowModel,
     FlexRender,
     getCoreRowModel,
     getPaginationRowModel,
     useVueTable,
-} from "@tanstack/vue-table"
+} from "@tanstack/vue-table";
 
 import {
   Table,
@@ -90,11 +103,18 @@ const props = defineProps<{
   data: TData[]
 }>()
 
+const sorting = ref<SortingState>([])
+
 const table = useVueTable({
     get data() { return props.data },
     get columns() { return props.columns },
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel()
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
+    state: {
+      get sorting() { return sorting.value },
+  },
 })
 
 table.setPagination({ pageIndex: 0, pageSize: 5 })
