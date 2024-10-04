@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const SortButtonStyle = 'pl-0 hover:bg-accent-none';
 
-export interface tableCustomer {
+export interface TableCustomer {
   id: string
   name: string
   status: 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
@@ -16,11 +16,11 @@ export interface tableCustomer {
   finalDate: string
 }
 
-export const data_customer: tableCustomer[] = [
+export const customersData: TableCustomer[] = [
   
 ];
 
-export const columns: ColumnDef<tableCustomer>[] = [
+export const columns: ColumnDef<TableCustomer>[] = [
   {
     accessorKey: 'name',
     header: () => 'Nome',

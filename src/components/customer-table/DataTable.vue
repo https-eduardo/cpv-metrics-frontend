@@ -25,7 +25,7 @@
         <template v-else>
           <TableRow>
             <TableCell :colspan="columns.length" class="h-24 text-center">
-              No results.
+              Sem resultados.
             </TableCell>
           </TableRow>
         </template>
@@ -42,7 +42,7 @@
         @click="table.previousPage()"
         class="bg-[#B66CFF] disabled:opacity-75"
       >
-        Back
+        Voltar
       </Button>
       <Button
         variant="outline"
@@ -51,7 +51,7 @@
         @click="table.nextPage()"
         class="bg-[#B66CFF] disabled:opacity-75"
       >
-        Next
+        Próximo
       </Button>
     </div>
     <div class="text-center text-white">
