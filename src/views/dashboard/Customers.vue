@@ -1,0 +1,28 @@
+<template>
+  <div class="flex flex-col w-full bg-[#1C1C1C]">
+    <div class="w-full block h-3 bg-[#B66CFF]"></div>
+    <div class="p-8">
+      <h1 class="text-2xl font-bold text-white">Clientes</h1>
+    </div>  
+    <div class="container py-10 mx-auto">
+      
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { columns, TableCustomer, customersData } from '../../components/customer-table/columns.ts'
+import DataTable from '../../components/customer-table/DataTable.vue'
+
+const data = ref<TableCustomer[]>([])
+
+async function getData(): Promise<TableCustomer[]> {
+  return customersData;
+}
+
+
+onMounted(async () => {
+  data.value = await getData()
+})
+</script>

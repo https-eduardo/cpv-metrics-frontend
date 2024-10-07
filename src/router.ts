@@ -3,6 +3,8 @@ import Auth from "./views/Auth.vue";
 import Metrics from "./views/dashboard/Metrics.vue";
 import DashboardLayout from "./views/dashboard/index.vue";
 
+import Customers from "./views/dashboard/Customers.vue";
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -17,6 +19,13 @@ const router = createRouter({
         { name: "Metrics", path: "", alias: "metrics", component: Metrics },
       ],
     },
+    {
+      path: "/customers",
+      component: DashboardLayout,
+      children:[
+        {name:"Customers", path:"", alias:"customers", component: Customers},
+      ],
+    }
   ],
 });
 
