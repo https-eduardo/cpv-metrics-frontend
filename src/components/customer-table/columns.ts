@@ -10,14 +10,13 @@ export interface TableCustomer {
   name: string
   status: 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
   payment: number
-  ltv: number 
-  type: 'Tipo S' | 'Tipo A' | 'Tipo B' | 'Tipo C' 
+  ltv: number
+  type: 'S' | 'A' | 'B' | 'C'
   startDate: string
   finalDate: string
 }
 
 export const customersData: TableCustomer[] = [
-  
 ];
 
 export const columns: ColumnDef<TableCustomer>[] = [
@@ -28,11 +27,11 @@ export const columns: ColumnDef<TableCustomer>[] = [
   {
     accessorKey: 'status',
     header: ({ column }) => {
-        return h(Button, {
-            variant: 'ghost',
-            onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-            class: SortButtonStyle,
-        }, () => ['Status', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+      return h(Button, {
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: SortButtonStyle,
+      }, () => ['Status', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
     },
     cell: ({ row }) => h('div', { class: '' }, row.getValue('status')),
   },
@@ -41,10 +40,11 @@ export const columns: ColumnDef<TableCustomer>[] = [
     accessorKey: 'payment',
     header: ({ column }) => {
       return h(Button, {
-      variant: 'ghost',
-      onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-      class: SortButtonStyle,
-  }, () => ['Mensalidade', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])},
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: SortButtonStyle,
+      }, () => ['Mensalidade', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+    },
     cell: ({ row }) => {
       const payment = Number.parseFloat(row.getValue('payment'));
       const formatted = new Intl.NumberFormat('pt-BR', {
@@ -62,7 +62,7 @@ export const columns: ColumnDef<TableCustomer>[] = [
         variant: 'ghost',
         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         class: SortButtonStyle,
-    }, () => ['LTV', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
+      }, () => ['LTV', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
     },
     cell: ({ row }) => {
       const ltv = Number.parseFloat(row.getValue('ltv'));
@@ -77,30 +77,33 @@ export const columns: ColumnDef<TableCustomer>[] = [
     accessorKey: 'type',
     header: ({ column }) => {
       return h(Button, {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: SortButtonStyle,
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: SortButtonStyle,
       }, () => ['Tipo', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-  },
+    },
+    cell: ({ row }) => {
+      return h('span', { class: 'text-left font-medium' }, `Tipo ${row.getValue('type')}`);
+    }
   },
   {
     accessorKey: 'startDate',
     header: ({ column }) => {
       return h(Button, {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: SortButtonStyle,
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: SortButtonStyle,
       }, () => ['Data inicio contrato', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-  },
+    },
   },
   {
     accessorKey: 'finalDate',
     header: ({ column }) => {
       return h(Button, {
-          variant: 'ghost',
-          onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-          class: SortButtonStyle,
+        variant: 'ghost',
+        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
+        class: SortButtonStyle,
       }, () => ['Data final contrato', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })])
-  },
+    },
   },
 ];
