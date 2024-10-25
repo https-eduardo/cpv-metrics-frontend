@@ -9,7 +9,7 @@
         <router-link to="/customers">
           <UserRound class="text-muted-foreground w-6 h-6" />
         </router-link>
-        <router-link to="">
+        <router-link to="/zone">
           <MapPin class="text-muted-foreground w-6 h-6" />
         </router-link>
       </div>
