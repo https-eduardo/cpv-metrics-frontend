@@ -8,12 +8,12 @@ const SortButtonStyle = 'pl-0 hover:bg-accent-none';
 export interface TableCustomer {
   id: string
   name: string
-  status: 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
+  status:  'Bandeira Branca' | 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
   payment: number
   ltv: number
   type: 'S' | 'A' | 'B' | 'C'
-  startDate: string
-  finalDate: string
+  startDate: Date
+  finalDate: Date
 }
 
 export const customersData: TableCustomer[] = [
@@ -54,7 +54,6 @@ export const columns: ColumnDef<TableCustomer>[] = [
       return h('div', { class: 'text-left font-medium' }, formatted);
     },
   },
-
   {
     accessorKey: 'ltv',
     header: ({ column }) => {
@@ -95,6 +94,11 @@ export const columns: ColumnDef<TableCustomer>[] = [
         class: SortButtonStyle,
       }, () => ['Data inicio contrato', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
     },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('startDate'))
+      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(date);
+      return h('div', { class: 'text-left font-medium' }, formattedDate);
+    },
   },
   {
     accessorKey: 'finalDate',
@@ -104,6 +108,11 @@ export const columns: ColumnDef<TableCustomer>[] = [
         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
         class: SortButtonStyle,
       }, () => ['Data final contrato', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('finalDate'))
+      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(date);
+      return h('div', { class: 'text-left font-medium' }, formattedDate);
     },
   },
 ];
