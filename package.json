@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/vue-table": "^8.20.5",
     "@vueuse/core": "^11.0.3",
     "apexcharts": "^3.53.0",
     "class-variance-authority": "^0.7.0",

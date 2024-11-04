@@ -8,10 +8,10 @@
         <router-link to="/dashboard">
           <Home class="text-muted-foreground w-6 h-6" />
         </router-link>
-        <router-link to="/dashboard">
+        <router-link to="/customers">
           <UserRound class="text-muted-foreground w-6 h-6" />
         </router-link>
-        <router-link to="/dashboard">
+        <router-link to="/zone">
           <MapPin class="text-muted-foreground w-6 h-6" />
         </router-link>
       </div>
