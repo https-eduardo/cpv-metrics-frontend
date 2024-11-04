@@ -1,20 +1,39 @@
 <script lang="ts" setup>
-import { type HTMLAttributes, computed } from 'vue'
-import { RangeCalendarRoot, type RangeCalendarRootEmits, type RangeCalendarRootProps, useForwardPropsEmits } from 'radix-vue'
-import { RangeCalendarCell, RangeCalendarCellTrigger, RangeCalendarGrid, RangeCalendarGridBody, RangeCalendarGridHead, RangeCalendarGridRow, RangeCalendarHeadCell, RangeCalendarHeader, RangeCalendarHeading, RangeCalendarNextButton, RangeCalendarPrevButton } from '.'
-import { cn } from '@/lib/utils'
+import { type HTMLAttributes, computed } from "vue";
+import {
+  RangeCalendarRoot,
+  type RangeCalendarRootEmits,
+  type RangeCalendarRootProps,
+  useForwardPropsEmits,
+} from "radix-vue";
+import {
+  RangeCalendarCell,
+  RangeCalendarCellTrigger,
+  RangeCalendarGrid,
+  RangeCalendarGridBody,
+  RangeCalendarGridHead,
+  RangeCalendarGridRow,
+  RangeCalendarHeadCell,
+  RangeCalendarHeader,
+  RangeCalendarHeading,
+  RangeCalendarNextButton,
+  RangeCalendarPrevButton,
+} from ".";
+import { cn } from "@/lib/utils";
 
-const props = defineProps<RangeCalendarRootProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<
+  RangeCalendarRootProps & { class?: HTMLAttributes["class"] }
+>();
 
-const emits = defineEmits<RangeCalendarRootEmits>()
+const emits = defineEmits<RangeCalendarRootEmits>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+  const { class: _, ...delegated } = props;
 
-  return delegated
-})
+  return delegated;
+});
 
-const forwarded = useForwardPropsEmits(delegatedProps, emits)
+const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
 
 <template>
@@ -25,7 +44,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   >
     <RangeCalendarHeader>
       <RangeCalendarPrevButton />
-      <RangeCalendarHeading />
+      <RangeCalendarHeading class="text-white" />
       <RangeCalendarNextButton />
     </RangeCalendarHeader>
 
@@ -33,24 +52,23 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       <RangeCalendarGrid v-for="month in grid" :key="month.value.toString()">
         <RangeCalendarGridHead>
           <RangeCalendarGridRow>
-            <RangeCalendarHeadCell
-              v-for="day in weekDays" :key="day"
-            >
+            <RangeCalendarHeadCell v-for="day in weekDays" :key="day">
               {{ day }}
             </RangeCalendarHeadCell>
           </RangeCalendarGridRow>
         </RangeCalendarGridHead>
         <RangeCalendarGridBody>
-          <RangeCalendarGridRow v-for="(weekDates, index) in month.rows" :key="`weekDate-${index}`" class="mt-2 w-full">
+          <RangeCalendarGridRow
+            v-for="(weekDates, index) in month.rows"
+            :key="`weekDate-${index}`"
+            class="mt-2 w-full"
+          >
             <RangeCalendarCell
               v-for="weekDate in weekDates"
               :key="weekDate.toString()"
               :date="weekDate"
             >
-              <RangeCalendarCellTrigger
-                :day="weekDate"
-                :month="month.value"
-              />
+              <RangeCalendarCellTrigger :day="weekDate" :month="month.value" />
             </RangeCalendarCell>
           </RangeCalendarGridRow>
         </RangeCalendarGridBody>

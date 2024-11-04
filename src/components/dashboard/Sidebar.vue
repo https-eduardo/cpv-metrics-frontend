@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-col bg-black w-24 h-full items-center">
+  <div
+    class="flex flex-col bg-black w-24 h-dvh items-center min-w-20 z-10 sticky top-0"
+  >
     <img :src="logo" alt="Logo CPV" width="75" height="75" />
-    <div class="flex flex-col justify-between h-full">
+    <div class="flex flex-col justify-between h-dvh">
       <div class="mt-8 flex flex-col justify-center items-center gap-6">
         <router-link to="/dashboard">
           <Home class="text-muted-foreground w-6 h-6" />
