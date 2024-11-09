@@ -1,175 +1,249 @@
-import { h } from 'vue';
-import { ColumnDef } from '@tanstack/vue-table';
-import { ArrowUpDown } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
+import { h } from "vue";
+import { ColumnDef } from "@tanstack/vue-table";
+import { ArrowUpDown } from "lucide-vue-next";
+import { Button } from "@/components/ui/button";
+import { ApiCustomer } from "@/types/customer";
+import { getCustomerLtv, getCustomerMonthlyFee } from "@/lib/utils";
 
-const SortButtonStyle = 'pl-0 hover:bg-accent-none';
+const SortButtonStyle = "pl-0 hover:bg-accent-none";
 
-export interface TableCustomer {
-  id: string
-  name: string
-  status:  'Bandeira Branca' | 'Bandeira Verde' | 'Bandeira Amarela' | 'Bandeira Vermelha'
-  payment: number
-  ltv: number
-  type: 'S' | 'A' | 'B' | 'C'
-  startDate: Date
-  finalDate: Date
-}
-
-export const customersData: TableCustomer[] = [
-];
-
-export const columns: ColumnDef<TableCustomer>[] = [
+export const columns: ColumnDef<ApiCustomer>[] = [
   {
-    accessorKey: 'name',
-    header: () => 'Nome',
+    accessorKey: "attributes.nome",
+    header: () => "Nome",
   },
   {
-    accessorKey: 'status',
+    accessorKey: "attributes.status",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Status', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}`, })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Status",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
-    cell: ({ row }) => h('div', { class: '' }, row.getValue('status')),
+    cell: ({ row }) => h("div", { class: "" }, row.original.attributes.status),
   },
 
   {
-    accessorKey: 'payment',
+    accessorKey: "attributes.contratos.mensalidade",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Mensalidade', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Mensalidade",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const payment = Number.parseFloat(row.getValue('payment'));
-      const formatted = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
+      const payment = getCustomerMonthlyFee(row.original);
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
       }).format(payment);
-      return h('div', { class: 'text-left font-medium' }, formatted);
+      return h("div", { class: "text-left font-medium" }, formatted);
     },
   },
   {
-    accessorKey: 'ltv',
+    accessorKey: "attributes.contratos.ltv",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['LTV', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "LTV",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const ltv = Number.parseFloat(row.getValue('ltv'));
-      const formatted = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
+      const ltv = getCustomerLtv(row.original);
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
       }).format(ltv);
-      return h('div', { class: 'text-left font-medium' }, formatted);
+      return h("div", { class: "text-left font-medium" }, formatted);
     },
   },
   {
-    accessorKey: 'type',
+    accessorKey: "attributes.classificacao",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Tipo', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Tipo",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      return h('span', { class: 'text-left font-medium' }, `Tipo ${row.getValue('type')}`);
-    }
+      return h(
+        "span",
+        { class: "text-left font-medium" },
+        `Tipo ${row.original.attributes.classificacao}`
+      );
+    },
   },
   {
-    accessorKey: 'startDate',
+    accessorKey: "attributes.contratos.dataInicio",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Data inicio contrato', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Data inicio contrato",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue('startDate'))
-      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(date);
-      return h('div', { class: 'text-left font-medium' }, formattedDate);
+      const date = new Date(
+        row.original.attributes.contratos.data?.at(0)?.attributes.dataInicio!
+      );
+      const formattedDate = new Intl.DateTimeFormat("pt-BR").format(date);
+      return h("div", { class: "text-left font-medium" }, formattedDate);
     },
   },
   {
-    accessorKey: 'finalDate',
+    accessorKey: "attributes.contratos.dataFinal",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Data final contrato', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Data final contrato",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue('finalDate'))
-      const formattedDate = new Intl.DateTimeFormat('pt-BR').format(date);
-      return h('div', { class: 'text-left font-medium' }, formattedDate);
+      const date = new Date(
+        row.original.attributes.contratos.data?.at(0)?.attributes.dataFinal!
+      );
+      const formattedDate = new Intl.DateTimeFormat("pt-BR").format(date);
+      return h("div", { class: "text-left font-medium" }, formattedDate);
     },
   },
 ];
 
-export interface TableZone {
-  city: string
-  zone: 'Norte' | 'Nordeste' | 'Centro-Oeste' | 'Sudeste' | 'Sul'
-  payment: number
-  ltv: number
-}
-
-export const dataZone: TableZone[] = [
-];
-
-export const columnsZone: ColumnDef<TableZone>[] = [
+export const columnsZone: ColumnDef<ApiCustomer>[] = [
   {
-    accessorKey: 'city',
-    header: () => 'Cidade',
+    accessorKey: "attributes.endereco.attributes.cidade",
+    header: () => "Cidade",
   },
   {
-    accessorKey: 'zone',
-    header: () => 'Região',
+    accessorKey: "attributes.endereco.attributes.regiao",
+    header: () => "Região",
   },
   {
-    accessorKey: 'payment',
+    accessorKey: "attributes.mensalidade",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['Mensalidade', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "Mensalidade",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const payment = Number.parseFloat(row.getValue('payment'));
-      const formatted = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
+      const payment = getCustomerMonthlyFee(row.original);
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
       }).format(payment);
-      return h('div', { class: 'text-left font-medium' }, formatted);
+      return h("div", { class: "text-left font-medium" }, formatted);
     },
   },
   {
-    accessorKey: 'ltv',
+    accessorKey: "attributes.ltv",
     header: ({ column }) => {
-      return h(Button, {
-        variant: 'ghost',
-        onClick: () => column.toggleSorting(column.getIsSorted() === 'asc'),
-        class: SortButtonStyle,
-      }, () => ['LTV', h(ArrowUpDown, { class: `ml-2 h-4 w-4 transition-transform duration-300 ${column.getIsSorted() === 'asc' ? 'rotate-180' : ''}` })])
+      return h(
+        Button,
+        {
+          variant: "ghost",
+          onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
+          class: SortButtonStyle,
+        },
+        () => [
+          "LTV",
+          h(ArrowUpDown, {
+            class: `ml-2 h-4 w-4 transition-transform duration-300 ${
+              column.getIsSorted() === "asc" ? "rotate-180" : ""
+            }`,
+          }),
+        ]
+      );
     },
     cell: ({ row }) => {
-      const ltv = Number.parseFloat(row.getValue('ltv'));
-      const formatted = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
+      const ltv = getCustomerLtv(row.original);
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
       }).format(ltv);
-      return h('div', { class: 'text-left font-medium' }, formatted);
+      return h("div", { class: "text-left font-medium" }, formatted);
     },
   },
 ];
