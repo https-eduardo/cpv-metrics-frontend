@@ -5,6 +5,7 @@
       <h1 class="text-2xl font-bold text-white">Métricas regionais</h1>
     </div>
     <div class="py-10 px-8">
+      <DataTable :columns="columnsZone" :data="data"/>
     </div>
   </div>
 </template>

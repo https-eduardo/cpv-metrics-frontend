@@ -17,6 +17,26 @@ export interface TableCustomer {
 }
 
 export const customersData: TableCustomer[] = [
+  {
+    id: '1',
+    name: 'jorge',
+    status: 'Bandeira Amarela',
+    payment: 222,
+    ltv: 232332,
+    type: 'A',
+    startDate: new Date('2020 02 28'),
+    finalDate: new Date('2024 02 28')
+  },
+  {
+    id: '2',
+    name: 'Cleiton',
+    status: 'Bandeira Verde',
+    payment: 323,
+    ltv: 333333,
+    type: 'S',
+    startDate: new Date('2020 02 28'),
+    finalDate: new Date('2026 02 28')
+  }
 ];
 
 export const columns: ColumnDef<TableCustomer>[] = [
@@ -125,6 +145,18 @@ export interface TableZone {
 }
 
 export const dataZone: TableZone[] = [
+  {
+    city: 'Londrina',
+    zone: 'Sul',
+    payment: 232,
+    ltv: 4000
+  },
+  {
+    city: 'Rolandia',
+    zone: 'Sul',
+    payment: 532,
+    ltv: 5000
+  }
 ];
 
 export const columnsZone: ColumnDef<TableZone>[] = [

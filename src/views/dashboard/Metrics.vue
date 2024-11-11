@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import DashboardCard from "../../components/dashboard/Card.vue";
 import PeriodFilter from "@/components/dashboard/PeriodFilter.vue";
-import MetricsFilter from "@/components/dashboard/metrics/MetricsFilter.vue";
+import MetricsFilter from "@/components/dashboard/MetricsFilter.vue";
 import RetentionChart from "@/components/dashboard/metrics/charts/RetentionChart.vue";
 import MonthlyFeeChart from "@/components/dashboard/metrics/charts/MonthlyFeeChart.vue";
 import { UsersRound, DollarSign, HandCoins, Percent } from "lucide-vue-next";
