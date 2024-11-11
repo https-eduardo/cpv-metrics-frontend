@@ -7,6 +7,7 @@ import { getCustomerLtv, getCustomerMonthlyFee } from "@/lib/utils";
 
 const SortButtonStyle = "pl-0 hover:bg-accent-none";
 
+
 export const columns: ColumnDef<ApiCustomer>[] = [
   {
     accessorKey: "attributes.nome",
@@ -178,6 +179,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
     },
   },
 ];
+
 
 export const columnsZone: ColumnDef<ApiCustomer>[] = [
   {
