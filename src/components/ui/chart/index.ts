@@ -1,4 +1,5 @@
 import { ApexOptions } from "apexcharts";
+import { format } from "date-fns";
 import { cloneDeep } from "lodash";
 
 interface AdditionalChartOptions {
@@ -101,8 +102,8 @@ export function getDefaultChartOptions(options?: AdditionalChartOptions) {
   return defaultChartOptions;
 }
 
-export function getMonthDefaultCategories() {
-  return cloneDeep(MONTH_DEFAULT_CATEGORIES);
+export function getMonthCategories(months: Date[]) {
+  return months.map((date) => format(date, "LLL, yyyy"));
 }
 export function getMonthDefaultColors() {
   return cloneDeep(MONTH_DEFAULT_COLORS);

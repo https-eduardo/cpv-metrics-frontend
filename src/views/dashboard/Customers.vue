@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { onMounted, Ref, ref, watch } from "vue";
 import { columns } from "../../components/customer-table/columns.ts";
-import { customersService, authService } from "@/services";
+import { customersService } from "@/services";
 import { ApiCustomer } from "@/types/customer.ts";
 import DataTable from "@/components/customer-table/DataTable.vue";
 import { useRouter } from "vue-router";

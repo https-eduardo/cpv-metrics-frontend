@@ -3,7 +3,10 @@ import { ColumnDef } from "@tanstack/vue-table";
 import { ArrowUpDown } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { ApiCustomer } from "@/types/customer";
-import { getCustomerLtv, getCustomerMonthlyFee } from "@/lib/utils";
+import {
+  getCustomerLtv,
+  getCustomerMonthlyIncome as getCustomerMonthlyIncome,
+} from "@/lib/utils";
 
 const SortButtonStyle = "pl-0 hover:bg-accent-none";
 
@@ -57,7 +60,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
       );
     },
     cell: ({ row }) => {
-      const payment = getCustomerMonthlyFee(row.original);
+      const payment = getCustomerMonthlyIncome(row.original);
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -211,7 +214,7 @@ export const columnsZone: ColumnDef<ApiCustomer>[] = [
       );
     },
     cell: ({ row }) => {
-      const payment = getCustomerMonthlyFee(row.original);
+      const payment = getCustomerMonthlyIncome(row.original);
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",

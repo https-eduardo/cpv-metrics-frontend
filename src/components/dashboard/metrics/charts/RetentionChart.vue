@@ -12,7 +12,6 @@
 <script lang="ts" setup>
 import {
   getDefaultChartOptions,
-  getMonthDefaultCategories,
   getMonthDefaultColors,
 } from "@/components/ui/chart";
 import Chart from "../../../ui/chart/Chart.vue";
@@ -20,7 +19,7 @@ import { ref } from "vue";
 
 const chartOptions = getDefaultChartOptions();
 
-chartOptions.xaxis!.categories = getMonthDefaultCategories();
+// chartOptions.xaxis!.categories = getMonthDefaultCategories();
 
 chartOptions.colors = getMonthDefaultColors();
 
