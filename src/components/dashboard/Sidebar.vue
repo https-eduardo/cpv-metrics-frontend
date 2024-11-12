@@ -17,7 +17,6 @@
       </div>
       <div class="mb-8 flex flex-col justify-center items-center gap-6">
         <DatabaseBackup class="text-muted-foreground w-6 h-6 cursor-pointer" />
-        <SunMoon class="text-muted-foreground w-6 h-6 cursor-pointer" />
         <LogOut class="text-muted-foreground w-6 h-6 cursor-pointer" />
       </div>
     </div>
@@ -31,7 +30,6 @@ import {
   UserRound,
   MapPin,
   DatabaseBackup,
-  SunMoon,
   LogOut,
 } from "lucide-vue-next";
 </script>
