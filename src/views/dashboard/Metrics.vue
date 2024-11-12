@@ -29,10 +29,10 @@
         <DashboardCard title="Churn Rate" :value="churnRate" :icon="Percent" />
       </div>
       <div class="grid w-full mt-8 grid-cols-2 gap-8 auto-rows-fr">
-        <RetentionChart />
+        <RetentionChart :customers="allCustomers" />
         <MonthlyIncomeChart :contracts="allContracts" />
-        <CustomersSituationChart />
-        <CustomersTypeChart />
+        <CustomersSituationChart :customers="allCustomers" />
+        <CustomersTypeChart :customers="allCustomers" />
       </div>
     </div>
   </div>
@@ -54,13 +54,14 @@ import {
   formatPercent,
   getContractsFromCustomer,
 } from "@/lib/utils";
-import { customersService, authService } from "@/services";
+import { customersService } from "@/services";
 import StatusFilter from "@/components/dashboard/StatusFilter.vue";
 import { ApiCustomer } from "@/types/customer";
 import { ApiContract } from "@/types/contract";
 
 const statusFilter = ref<"all" | "active">("active");
 const customers = ref<ApiCustomer[]>([]);
+const allCustomers = ref<ApiCustomer[]>([]);
 const allContracts = ref<ApiContract[]>([]);
 
 const periodFilter = ref({}) as Ref<DateRange>;
@@ -79,11 +80,12 @@ const calculatedIncome = computed(() => formatMoney(state.calculatedIncome));
 const calculatedLtv = computed(() => formatMoney(state.calculatedLtv));
 const churnRate = computed(() => formatPercent(state.churnRate));
 
-const fetchAllContracts = async () => {
+const fetchAllForMetrics = async () => {
   const {
     data: { data: customersData },
   } = await customersService.getMetricsCustomer("all");
 
+  allCustomers.value = customersData;
   allContracts.value = getContractsFromCustomer(customersData);
 };
 
@@ -108,7 +110,7 @@ const fetchGeneralInfo = async () => {
 };
 
 onMounted(async () => {
-  fetchAllContracts();
+  fetchAllForMetrics();
   fetchGeneralInfo();
   fetchCustomers();
 });
@@ -124,5 +126,9 @@ watch(
 watch(statusFilter, () => {
   fetchGeneralInfo();
   fetchCustomers();
+});
+
+watch(filters, () => {
+  fetchAllForMetrics();
 });
 </script>

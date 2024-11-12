@@ -153,12 +153,10 @@ const transformFiltersInQueryString = () => {
     (key) => !!tiersFiltered[key]
   );
 
-  activeFlagFilters.forEach((flag) =>
-    orFilter.push(`[contratos][status][$eq]=${flag}`)
-  );
+  activeFlagFilters.forEach((flag) => orFilter.push(`[status][$eq]=${flag}`));
 
   activeTiersFiltered.forEach((tier) =>
-    orFilter.push(`[contratos][classificacao][$eq]=${tier}`)
+    orFilter.push(`[classificacao][$eq]=${tier}`)
   );
 
   const prefix = "&filters[$and][0]";

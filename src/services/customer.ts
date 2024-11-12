@@ -32,14 +32,19 @@ export class CustomerService {
     );
   }
 
-  async getMetricsCustomer(statusFilter: "all" | "active") {
+  async getMetricsCustomer(
+    statusFilter: "all" | "active",
+    filters: string = ""
+  ) {
     let filterString = "";
     const contractRelation = `populate[contratos]=true`;
 
     if (statusFilter === "active")
       filterString = "&filters[status][$ne]=perdido";
 
-    return this.api.get(`clientes?${contractRelation}${filterString}`);
+    return this.api.get(
+      `clientes?${contractRelation}${`&pagination[pageSize]=10000`}${filterString}${filters}`
+    );
   }
 
   async getCustomersGeneralInfo(
