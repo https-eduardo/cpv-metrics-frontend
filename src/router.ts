@@ -4,6 +4,7 @@ import Metrics from "./views/dashboard/Metrics.vue";
 import DashboardLayout from "./views/dashboard/index.vue";
 import Customers from "./views/dashboard/Customers.vue";
 import ZoneMetrics from "./views/dashboard/ZoneMetrics.vue";
+import Campaign from "./views/dashboard/Campaign.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -31,6 +32,13 @@ const router = createRouter({
       component: DashboardLayout,
       children:[
         {name:"ZoneMetrics", path:"", alias:"zone", component: ZoneMetrics},
+      ],
+    },
+    {
+      path: "/campaign",
+      component: DashboardLayout,
+      children:[
+        {name:"Campaign", path:"", alias:"campaign", component: Campaign},
       ],
     },
   ],

@@ -14,6 +14,9 @@
         <router-link to="/zone">
           <MapPin class="text-muted-foreground w-6 h-6" />
         </router-link>
+        <router-link to="/campaign">
+          <img src="../../assets/homeney_button.png" alt="Botão de rota para homeney" class="w-6 h-6">
+        </router-link>
       </div>
       <div class="mb-8 flex flex-col justify-center items-center gap-6">
         <DatabaseBackup class="text-muted-foreground w-6 h-6 cursor-pointer" />

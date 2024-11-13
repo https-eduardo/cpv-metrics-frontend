@@ -26,7 +26,10 @@
           :value="calculatedLtv"
           :icon="HandCoins"
         />
-        <DashboardCard title="Churn Rate" :value="churnRate" :icon="Percent" />
+        <DashboardCard 
+          title="Churn Rate" 
+          :value="churnRate" 
+          :icon="Percent" />
       </div>
       <div class="grid w-full mt-8 grid-cols-2 gap-8 auto-rows-fr">
         <RetentionChart />
