@@ -6,6 +6,8 @@ import type { Ref } from "vue";
 import { ApiCustomer } from "@/types/customer";
 import { format } from "date-fns";
 import { ApiContract } from "@/types/contract";
+import { ApiCampaign } from "@/types/campaign";
+import { ApiReport } from "@/types/report";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -87,5 +89,31 @@ export function sortContractsByStartDate(contracts: ApiContract[]) {
     (a, b) =>
       new Date(a.attributes.dataInicio).getTime() -
       new Date(b.attributes.dataInicio).getTime()
+  );
+}
+
+export function getReportsFromCampaign(campaigns: ApiCampaign[]) {
+  return campaigns.reduce((reports: ApiReport[], campaign) => {
+    const report = campaign.attributes.relatorios.data;
+    if (report) reports.push(...report);
+    return reports;
+  }, []);
+}
+
+export function getCampaignCost(campaign: ApiCampaign) {
+  return (
+    campaign.attributes.relatorios?.data?.reduce(
+      (t, { attributes }) => t + attributes.custo,
+      0
+    ) || 0
+  );
+}
+
+export function getCampaignCostPerConversion(campaign: ApiCampaign) {
+  return (
+    campaign.attributes.relatorios?.data?.reduce(
+      (t, { attributes }) => t + attributes.custoPorConversao,
+      0
+    ) || 0
   );
 }
