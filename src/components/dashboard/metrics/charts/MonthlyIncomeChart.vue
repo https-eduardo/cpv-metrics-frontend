@@ -2,8 +2,10 @@
   <div
     class="py-2 px-6 bg-[#282828] rounded-md border-[#2D2D2D] border-[1px] w-full"
   >
-    <h3 class="text-[#fafafa] text-md mt-2 mb-3 font-medium">
-      Mensalidades adquiridas por período
+    <h3
+      class="text-[#fafafa] flex items-center justify-between gap-2 text-md mt-2 mb-3 font-medium"
+    >
+      Mensalidades adquiridas por período <FiltersWarning period filter />
     </h3>
     <Chart
       type="area"
@@ -24,8 +26,13 @@ import {
 import Chart from "../../../ui/chart/Chart.vue";
 import { ref, watch } from "vue";
 import { ApiContract } from "@/types/contract";
-import { getContractsPeriod, sortContractsByStartDate } from "@/lib/utils";
+import {
+  formatMoney,
+  getContractsPeriod,
+  sortContractsByStartDate,
+} from "@/lib/utils";
 import { format } from "date-fns";
+import FiltersWarning from "../../FiltersWarning.vue";
 
 const props = defineProps({
   contracts: Array<ApiContract>,
@@ -36,7 +43,20 @@ const chart = ref();
 
 const categories = ref<string[]>([]);
 
-const chartOptions = ref(getDefaultChartOptions());
+const chartOptions = ref(
+  getDefaultChartOptions({
+    tooltipFormatter: {
+      formatter(val) {
+        return `${formatMoney(val)}`;
+      },
+      title: {
+        formatter() {
+          return "Valor:";
+        },
+      },
+    },
+  })
+);
 
 chartOptions.value.colors = getChartDefaultColors();
 
@@ -65,10 +85,9 @@ watch(
     contracts.value = props.contracts ?? [];
     categories.value = getMonthCategories(getContractsPeriod(contracts.value));
     series.value = [{ data: getSeries() }];
-    chartOptions.value.xaxis!.categories = categories;
     chartOptions.value = {
       ...chartOptions.value,
-      xaxis: { ...chartOptions.value.xaxis, categories },
+      xaxis: { ...chartOptions.value.xaxis, categories: categories.value },
     };
   },
   { deep: true }

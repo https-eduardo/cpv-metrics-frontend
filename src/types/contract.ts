@@ -6,7 +6,7 @@ export interface ApiContract {
   id: number;
   attributes: {
     dataInicio: Date;
-    dataFinal?: Date;
+    dataFinal: Date;
     situacao: ApiContractSituation;
     mensalidade: number;
     ltv: number;

@@ -21,21 +21,6 @@ const MONTH_DEFAULT_COLORS = [
   "#3f1ec2",
 ];
 
-const MONTH_DEFAULT_CATEGORIES = [
-  "Janeiro",
-  "Fevereiro",
-  "Março",
-  "Abril",
-  "Maio",
-  "Junho",
-  "Julho",
-  "Agosto",
-  "Setembro",
-  "Outubro",
-  "Novembro",
-  "Dezembro",
-];
-
 const DEFAULT_CHART_OPTIONS: ApexOptions = {
   chart: {
     fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
