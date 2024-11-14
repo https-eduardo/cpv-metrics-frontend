@@ -11,64 +11,28 @@ export class CampaignService {
     this.api = api;
   }
 
-  async getCampaigns({ page, pageSize = 10, sort }: FetchCampaignOptions) {
-    let sortString = "";
-    const reportRelation = `&populate[relatorios]=true`;
-    const pagination = `pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
-
-    if (sort) {
-      const sortingFieldName = Object.keys(sort)[0];
-      if (sortingFieldName) {
-        const sorting = sort[sortingFieldName];
-
-        if (sorting.relation)
-          sortString = `&sort=${sorting.relation}.${sortingFieldName}:${sorting.order}`;
-        else sortString = `&sort=${sortingFieldName}:${sorting.order}`;
-      }
-    }
-
-    return this.api.get(
-      `campanhas?${pagination}${reportRelation}${sortString}`
-    );
-  }
-
-  async getMetricsCampaign(statusCampaignFilter: "all" | "active") {
-    let filterString = "";
-    const reportRelation = `populate[relatorios]=true`;
-
-    if (statusCampaignFilter === "active")
-      filterString = "&filters[status][$ne]=desativa";
-
-    return this.api.get(`campanhas?${reportRelation}${filterString}`);
-  }
-
-  async getCustomersGeneralInfo(
+  async getCampaignGeneralInfo(
     periodFilter: DateRange,
     statusFilter: "all" | "active"
   ) {
-    let filterString = "";
+    let filterString = "filterOnlyActive=false";
 
-    if (statusFilter === "active")
-      filterString = "&filters[status][$ne]=perdido";
+    if (statusFilter === "active") filterString = "filterOnlyActive=true";
 
-    const contractRelation = `populate[contratos][fields][0]=mensalidade&[contratos][fields][1]=ltv`;
     if (periodFilter.start) {
       const startDate = formatDateToApi(
         periodFilter.start.toDate(getLocalTimeZone())
       );
-      let endDate = startDate;
+      filterString += `&start=${startDate}`;
 
-      if (periodFilter.end)
-        endDate = formatDateToApi(periodFilter.end!.toDate(getLocalTimeZone()));
-
-      // Initial date between filter
-      // filterString += `&filters[$or][0][contratos][dataInicio][$between]=${startDate}&filters[$or][0][contratos][dataInicio][$between]=${endDate}`;
-      // // End contract date between filter
-      // filterString += `&filters[$or][1][contratos][dataFinal][$between]=${startDate}&filters[$or][1][contratos][dataFinal][$between]=${endDate}`;
+      if (periodFilter.end) {
+        const endDate = formatDateToApi(
+          periodFilter.end!.toDate(getLocalTimeZone())
+        );
+        filterString += `&end=${endDate}`;
+      }
     }
 
-    return this.api.get(
-      `clientes/general-info?${contractRelation}${filterString}`
-    );
+    return this.api.get(`relatorio-campanhas/general-info?${filterString}`);
   }
 }

@@ -5,7 +5,7 @@
     <h3
       class="text-[#fafafa] flex items-center justify-between gap-2 text-md mt-2 mb-3 font-medium"
     >
-      Taxa de retenção por mês <FiltersWarning period filter />
+      Taxa de retenção por mês <FiltersWarning filter />
     </h3>
     <Chart type="line" height="300" :options="chartOptions" :series="series" />
   </div>

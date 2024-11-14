@@ -5,7 +5,7 @@
     <h3
       class="text-[#fafafa] flex items-center justify-between gap-2 text-md mt-2 mb-3 font-medium"
     >
-      Clientes por situação <FiltersWarning period filter />
+      Clientes por situação <FiltersWarning filter />
     </h3>
     <Chart
       v-if="customers.length > 0"

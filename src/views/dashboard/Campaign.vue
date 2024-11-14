@@ -5,27 +5,31 @@
       <h1 class="text-3xl font-bold text-white">Homeney</h1>
       <div class="flex w-full gap-2 justify-end">
         <StatusCampaignFilter v-model="statusCampaignFilter" />
-        <PeriodCampaignFilter v-model="periodCampaignFilter" />
+        <PeriodFilter v-model="periodFilter" />
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">Geral</h2>
       <div class="flex gap-12 flex-wrap">
         <DashboardCard title="Impressões" :value="impressionCount" />
-        <DashboardCard class="flex-1" title="Conversões" :value="conversionCount" />
+        <DashboardCard
+          class="flex-1"
+          title="Conversões"
+          :value="conversionCount"
+        />
         <DashboardCard class="flex-1" title="Custo" :value="cost" />
         <DashboardCard title="Custo/conv." :value="costPerConversion" />
       </div>
       <div class="py-10">
-      <h2 class="text-2xl font-bold text-white mb-2">Campanhas</h2>
-      <DataTable
-        :columns="columnsCampaign"
-        :data="data"
-        :totalPages="totalPages"
-        :current-page="currentPage"
-        :loading="loading"
-        @change-page="handlePageChange"
-        @sort="handleSorting"
-      />
-    </div>
+        <h2 class="text-2xl font-bold text-white mb-2">Campanhas</h2>
+        <DataTable
+          :columns="columnsCampaign"
+          :data="data"
+          :totalPages="totalPages"
+          :current-page="currentPage"
+          :loading="loading"
+          @change-page="handlePageChange"
+          @sort="handleSorting"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -35,18 +39,14 @@ import { computed, onMounted, reactive, ref, Ref, watch } from "vue";
 import { DateRange } from "radix-vue";
 import DashboardCard from "@/components/dashboard/Card.vue";
 import StatusCampaignFilter from "@/components/dashboard/StatusCampaignFilter.vue";
-import PeriodCampaignFilter from "@/components/dashboard/PeriodCampaignFilter.vue";
-import {
-  formatMoney,
-  getReportsFromCampaign,
-} from "@/lib/utils";
+import { formatMoney, formatNumber } from "@/lib/utils";
 import { campaignsService } from "@/services";
 import { ApiCampaign } from "@/types/campaign";
-import { ApiReport } from "@/types/report";
-import DataTable from "@/components/customer-table/DataTable.vue";
-import {columnsCampaign } from "../../components/customer-table/columns.ts";
+import DataTable from "@/components/campaign-table/DataTable.vue";
+import { columnsCampaign } from "../../components/campaign-table/columns.ts";
 import { useRouter } from "vue-router";
 import { SortingOption } from "@/types/common.ts";
+import PeriodFilter from "@/components/dashboard/PeriodFilter.vue";
 
 const { currentRoute, push } = useRouter();
 
@@ -57,10 +57,6 @@ const sort = ref<SortingOption>({});
 const loading = ref<boolean>(true);
 
 const statusCampaignFilter = ref<"all" | "active">("active");
-const periodCampaignFilter = ref<"day" | "week" | "month">("month");
-
-const campaigns = ref<ApiCampaign[]>([]);
-const allReports = ref<ApiReport[]>([]);
 
 const periodFilter = ref({}) as Ref<DateRange>;
 
@@ -71,13 +67,13 @@ const state = reactive({
   costPerConversion: 0,
 });
 
-const impressionCount = computed(() => String(state.impressionCount));
-const conversionCount = computed(() => String(state.conversionCount));
+const impressionCount = computed(() => formatNumber(state.impressionCount));
+const conversionCount = computed(() => formatNumber(state.conversionCount));
 const cost = computed(() => formatMoney(state.cost));
 const costPerConversion = computed(() => formatMoney(state.costPerConversion));
 
 async function getData(page: number, sort: SortingOption) {
-  return await campaignsService.getCampaigns({ page, sort });
+  // return await campaignsService.getCampaigns({ page, sort });
 }
 
 const handlePageChange = (page: number) => {
@@ -94,7 +90,14 @@ const handlePageChange = (page: number) => {
 const handleSorting = (sorting: Ref<Record<string, any>[]>) => {
   const sortItem = sorting.value[0];
   let fieldName = sortItem.id.split("_").at(-1);
-  const reportFields = ["status", "custo", "conversao", "custoPorConversao", "cliques", "ctr"];
+  const reportFields = [
+    "status",
+    "custo",
+    "conversao",
+    "custoPorConversao",
+    "cliques",
+    "ctr",
+  ];
 
   sort.value = {
     [fieldName]: {
@@ -105,59 +108,41 @@ const handleSorting = (sorting: Ref<Record<string, any>[]>) => {
   loading.value = true;
 };
 
-async function updateData() {
-  const {
-    data: { data: campaigns, meta },
-  } = await getData(currentPage.value, sort.value);
+// async function updateData() {
+//   const {
+//     data: { data: campaigns, meta },
+//   } = await getData(currentPage.value, sort.value);
 
-  totalPages.value = meta.pagination.pageCount;
-  data.value = campaigns;
-  loading.value = false;
-}
+//   totalPages.value = meta.pagination.pageCount;
+//   data.value = campaigns;
+//   loading.value = false;
+// }
 
-const fetchAllReports = async () => {
-  const {
-    data: { data: campaignsData },
-  } = await campaignsService.getMetricsCampaign("all");
-
-  allReports.value = getReportsFromCampaign(campaignsData);
-};
-
-const fetchCampaigns = async () => {
-  const {
-    data: { data: campaignsData },
-  } = await campaignsService.getMetricsCampaign(statusCampaignFilter.value);
-
-  campaigns.value = campaignsData;
-};
-
-//
 const fetchGeneralInfo = async () => {
-  const { data } = await campaignsService.getCustomersGeneralInfo(
+  const { data } = await campaignsService.getCampaignGeneralInfo(
     periodFilter.value,
     statusCampaignFilter.value
   );
 
-  state.impressionCount = data.impressionCount;
-  state.conversionCount = data.conversionCount;
+  state.impressionCount = data.impressions;
+  state.conversionCount = data.conversions;
   state.cost = data.cost;
-  state.costPerConversion = data.costPerConversion;
+  state.costPerConversion = data.cost / data.conversions;
 };
 
-watch(currentPage, () => {
-  updateData();
-});
+// watch(currentPage, () => {
+//   updateData();
+// });
 
-watch(sort, () => {
-  updateData();
-});
+// watch(sort, () => {
+//   updateData();
+// });
 
 onMounted(async () => {
-  fetchAllReports();
   fetchGeneralInfo();
-  fetchCampaigns();
+  // fetchCampaigns();
   handlePageChange(Number(currentRoute.value.query.page) || 1);
-  updateData();
+  // updateData();
 });
 
 watch(
@@ -170,11 +155,5 @@ watch(
 
 watch(statusCampaignFilter, () => {
   fetchGeneralInfo();
-  fetchCampaigns();
-});
-
-watch(periodCampaignFilter, () => {
-  fetchGeneralInfo();
-  fetchCampaigns();
 });
 </script>

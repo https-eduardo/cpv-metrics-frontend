@@ -3,7 +3,6 @@ import Auth from "./views/Auth.vue";
 import Metrics from "./views/dashboard/Metrics.vue";
 import DashboardLayout from "./views/dashboard/index.vue";
 import Customers from "./views/dashboard/Customers.vue";
-import ZoneMetrics from "./views/dashboard/ZoneMetrics.vue";
 import Campaign from "./views/dashboard/Campaign.vue";
 
 const router = createRouter({
@@ -23,22 +22,20 @@ const router = createRouter({
     {
       path: "/customers",
       component: DashboardLayout,
-      children:[
-        {name:"Customers", path:"", alias:"customers", component: Customers},
-      ],
-    },
-    {
-      path: "/zone",
-      component: DashboardLayout,
-      children:[
-        {name:"ZoneMetrics", path:"", alias:"zone", component: ZoneMetrics},
+      children: [
+        {
+          name: "Customers",
+          path: "",
+          alias: "customers",
+          component: Customers,
+        },
       ],
     },
     {
       path: "/campaign",
       component: DashboardLayout,
-      children:[
-        {name:"Campaign", path:"", alias:"campaign", component: Campaign},
+      children: [
+        { name: "Campaign", path: "", alias: "campaign", component: Campaign },
       ],
     },
   ],
