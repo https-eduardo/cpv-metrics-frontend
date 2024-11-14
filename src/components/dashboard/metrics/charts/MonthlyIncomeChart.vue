@@ -5,7 +5,7 @@
     <h3
       class="text-[#fafafa] flex items-center justify-between gap-2 text-md mt-2 mb-3 font-medium"
     >
-      Mensalidades adquiridas por período <FiltersWarning period filter />
+      Mensalidades adquiridas por período <FiltersWarning filter />
     </h3>
     <Chart
       type="area"

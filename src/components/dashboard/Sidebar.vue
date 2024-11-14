@@ -11,16 +11,20 @@
         <router-link to="/customers">
           <UserRound class="text-muted-foreground w-6 h-6" />
         </router-link>
-        <router-link to="/zone">
-          <MapPin class="text-muted-foreground w-6 h-6" />
-        </router-link>
         <router-link to="/campaign">
-          <img src="../../assets/homeney_button.png" alt="Botão de rota para homeney" class="w-6 h-6">
+          <img
+            src="../../assets/homeney_button.png"
+            alt="Botão de rota para homeney"
+            class="w-6 h-6"
+          />
         </router-link>
       </div>
       <div class="mb-8 flex flex-col justify-center items-center gap-6">
         <DatabaseBackup class="text-muted-foreground w-6 h-6 cursor-pointer" />
-        <LogOut class="text-muted-foreground w-6 h-6 cursor-pointer"  @click="handleLogout"/>
+        <LogOut
+          class="text-muted-foreground w-6 h-6 cursor-pointer"
+          @click="handleLogout"
+        />
       </div>
     </div>
   </div>
@@ -28,13 +32,7 @@
 
 <script setup lang="ts">
 import logo from "../../assets/logo_cpv.png";
-import {
-  Home,
-  UserRound,
-  MapPin,
-  DatabaseBackup,
-  LogOut,
-} from "lucide-vue-next";
+import { Home, UserRound, DatabaseBackup, LogOut } from "lucide-vue-next";
 import { authService } from "@/services";
 import { useRouter } from "vue-router";
 
@@ -42,6 +40,6 @@ const router = useRouter();
 
 const handleLogout = async () => {
   await authService.logout();
-  router.push('/');
+  router.push("/");
 };
 </script>

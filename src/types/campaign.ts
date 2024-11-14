@@ -1,18 +1,28 @@
 import { SortingOption } from "./common";
-import { ApiReport } from "./report";
 
-export type ApiCampaignStatus =
-  | "pausada"
-  | "ativa"
-  | "desativa"
+export type ApiCampaignStatus = "pausada" | "ativa" | "desativada";
 
 export interface ApiCampaign {
   id: number;
   attributes: {
-    campanha: string;
+    nome: string;
     status: ApiCampaignStatus;
-    relatorios: {
-      data?: ApiReport[];
+    relatorio_campanhas: {
+      data?: ApiCampaignReport[];
+    };
+  };
+}
+
+export interface ApiCampaignReport {
+  id: number;
+  attributes: {
+    custo: number;
+    conversoes: number;
+    custoConversao: number;
+    clicks: number;
+    ctr: number;
+    campanha: {
+      data?: ApiCampaign;
     };
   };
 }

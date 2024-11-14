@@ -6,7 +6,6 @@
       <div class="flex w-full gap-2 justify-end mb-8">
         <MetricsFilter v-model="filters" />
         <StatusFilter v-model="statusFilter" />
-        <PeriodFilter v-model="periodFilter" />
       </div>
       <div class="flex gap-12 flex-wrap">
         <DashboardCard
@@ -26,10 +25,7 @@
           :value="calculatedLtv"
           :icon="HandCoins"
         />
-        <DashboardCard 
-          title="Churn Rate" 
-          :value="churnRate" 
-          :icon="Percent" />
+        <DashboardCard title="Churn Rate" :value="churnRate" :icon="Percent" />
       </div>
       <div class="grid w-full mt-8 grid-cols-2 gap-8 auto-rows-fr">
         <RetentionChart :customers="allCustomers" />
