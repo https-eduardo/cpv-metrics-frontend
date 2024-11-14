@@ -3,9 +3,9 @@
     <div class="w-full block h-3"></div>
     <div class="p-8">
       <h1 class="text-3xl font-bold text-white">Homeney</h1>
-      <div class="flex w-full gap-2 justify-end">
-        <StatusCampaignFilter v-model="statusCampaignFilter" />
-        <PeriodCampaignFilter v-model="periodCampaignFilter" />
+      <div class="flex w-full gap-2 justify-end ">
+        <StatusFilterCampaign v-model="statusFilterCampaign"/>
+        <PeriodFilterCampaign v-model="periodFilterCampaign" />
       </div>
       <h2 class="text-2xl font-bold text-white mb-2">Geral</h2>
       <div class="flex gap-12 flex-wrap">
@@ -34,12 +34,12 @@
 import { computed, onMounted, reactive, ref, Ref, watch } from "vue";
 import { DateRange } from "radix-vue";
 import DashboardCard from "@/components/dashboard/Card.vue";
-import StatusCampaignFilter from "@/components/dashboard/StatusCampaignFilter.vue";
-import PeriodCampaignFilter from "@/components/dashboard/PeriodCampaignFilter.vue";
 import {
   formatMoney,
   getReportsFromCampaign,
 } from "@/lib/utils";
+import PeriodFilterCampaign from "@/components/dashboard/PeriodFilterCampaign.vue";
+import StatusFilterCampaign from "@/components/dashboard/StatusFilterCampaign.vue";
 import { campaignsService } from "@/services";
 import { ApiCampaign } from "@/types/campaign";
 import { ApiReport } from "@/types/report";
@@ -56,13 +56,11 @@ const currentPage = ref<number>(1);
 const sort = ref<SortingOption>({});
 const loading = ref<boolean>(true);
 
-const statusCampaignFilter = ref<"all" | "active">("active");
-const periodCampaignFilter = ref<"day" | "week" | "month">("month");
-
 const campaigns = ref<ApiCampaign[]>([]);
 const allReports = ref<ApiReport[]>([]);
+const allCampaigns = ref<ApiCampaign[]>([]);
 
-const periodFilter = ref({}) as Ref<DateRange>;
+const periodFilterCampaign = ref({}) as Ref<DateRange>;
 
 const state = reactive({
   impressionCount: 0,
@@ -71,10 +69,21 @@ const state = reactive({
   costPerConversion: 0,
 });
 
+const statusFilterCampaign = ref("");
+
 const impressionCount = computed(() => String(state.impressionCount));
 const conversionCount = computed(() => String(state.conversionCount));
 const cost = computed(() => formatMoney(state.cost));
 const costPerConversion = computed(() => formatMoney(state.costPerConversion));
+
+const fetchAllForMetricsCampaigns = async () => {
+  const {
+    data: { data: campaignsData },
+  } = await campaignsService.getMetricsCampaign("all");
+
+  allCampaigns.value = campaignsData;
+  allReports.value = getReportsFromCampaign(campaignsData);
+};
 
 async function getData(page: number, sort: SortingOption) {
   return await campaignsService.getCampaigns({ page, sort });
@@ -123,19 +132,10 @@ const fetchAllReports = async () => {
   allReports.value = getReportsFromCampaign(campaignsData);
 };
 
-const fetchCampaigns = async () => {
-  const {
-    data: { data: campaignsData },
-  } = await campaignsService.getMetricsCampaign(statusCampaignFilter.value);
-
-  campaigns.value = campaignsData;
-};
-
 //
 const fetchGeneralInfo = async () => {
   const { data } = await campaignsService.getCustomersGeneralInfo(
-    periodFilter.value,
-    statusCampaignFilter.value
+    periodFilterCampaign.value,
   );
 
   state.impressionCount = data.impressionCount;
@@ -155,26 +155,19 @@ watch(sort, () => {
 onMounted(async () => {
   fetchAllReports();
   fetchGeneralInfo();
-  fetchCampaigns();
   handlePageChange(Number(currentRoute.value.query.page) || 1);
   updateData();
 });
 
 watch(
-  periodFilter,
+  periodFilterCampaign,
   () => {
     fetchGeneralInfo();
   },
   { deep: true }
 );
 
-watch(statusCampaignFilter, () => {
-  fetchGeneralInfo();
-  fetchCampaigns();
-});
-
-watch(periodCampaignFilter, () => {
-  fetchGeneralInfo();
-  fetchCampaigns();
+watch(statusFilterCampaign, () => {
+  fetchAllForMetricsCampaigns();
 });
 </script>

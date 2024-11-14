@@ -44,12 +44,8 @@ export class CampaignService {
 
   async getCustomersGeneralInfo(
     periodFilter: DateRange,
-    statusFilter: "all" | "active"
   ) {
     let filterString = "";
-
-    if (statusFilter === "active")
-      filterString = "&filters[status][$ne]=perdido";
 
     const contractRelation = `populate[contratos][fields][0]=mensalidade&[contratos][fields][1]=ltv`;
     if (periodFilter.start) {
