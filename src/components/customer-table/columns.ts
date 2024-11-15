@@ -1,6 +1,6 @@
 import { h } from "vue";
 import { ColumnDef } from "@tanstack/vue-table";
-import { ArrowUpDown } from "lucide-vue-next";
+import { ArrowUpToLine } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
 import { ApiCustomer } from "@/types/customer";
 import {
@@ -27,7 +27,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Status",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -50,7 +50,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Mensalidade",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -79,7 +79,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "LTV",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -108,7 +108,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Tipo",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -136,7 +136,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Data inicio contrato",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -164,7 +164,7 @@ export const columns: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Data final contrato",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -203,7 +203,7 @@ export const columnsZone: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "Mensalidade",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -232,7 +232,7 @@ export const columnsZone: ColumnDef<ApiCustomer>[] = [
         },
         () => [
           "LTV",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,

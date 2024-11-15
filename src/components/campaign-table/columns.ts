@@ -2,7 +2,7 @@ import { h } from "vue";
 import { ApiCampaign } from "@/types/campaign";
 import { ColumnDef } from "@tanstack/vue-table";
 import Button from "../ui/button/Button.vue";
-import { ArrowUpDown } from "lucide-vue-next";
+import { ArrowUpToLine } from "lucide-vue-next";
 import { formatPercent } from "@/lib/utils";
 
 const SortButtonStyle = "pl-0 hover:bg-accent-none";
@@ -24,7 +24,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "Status",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -47,7 +47,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "Custo",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -77,7 +77,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "Conversão",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -106,7 +106,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "Custo/conv",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -136,7 +136,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "Cliques",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
@@ -165,7 +165,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         },
         () => [
           "CTR",
-          h(ArrowUpDown, {
+          h(ArrowUpToLine, {
             class: `ml-2 h-4 w-4 transition-transform duration-300 ${
               column.getIsSorted() === "asc" ? "rotate-180" : ""
             }`,
