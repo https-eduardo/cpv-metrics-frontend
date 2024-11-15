@@ -1,5 +1,4 @@
 import { formatDateToApi } from "@/lib/utils";
-import { FetchCampaignOptions } from "@/types/campaign";
 import { AxiosInstance } from "axios";
 import { DateRange } from "radix-vue";
 import { getLocalTimeZone } from "@internationalized/date";
@@ -9,6 +8,42 @@ export class CampaignService {
 
   constructor(api: AxiosInstance) {
     this.api = api;
+  }
+
+  async getCampaignList(
+    page: number,
+    periodFilter?: DateRange,
+    statusFilter?: "all" | "active",
+    filterName?: string,
+    sortable?: string,
+    sortOrder?: string,
+    pageSize = 10
+  ) {
+    let queryString = "&filterActive=false";
+    const paginationString = `pageSize=${pageSize}&page=${page}`;
+
+    if (statusFilter === "active") queryString = "&filterActive=true";
+
+    if (sortable && sortOrder)
+      queryString += `&sort=${sortable}&sortOrder=${sortOrder}`;
+
+    if (filterName) queryString += `&filterName=${filterName}`;
+
+    if (periodFilter?.start) {
+      const startDate = formatDateToApi(
+        periodFilter.start.toDate(getLocalTimeZone())
+      );
+      queryString += `&start=${startDate}`;
+
+      if (periodFilter.end) {
+        const endDate = formatDateToApi(
+          periodFilter.end!.toDate(getLocalTimeZone())
+        );
+        queryString += `&end=${endDate}`;
+      }
+    }
+
+    return this.api.get(`campanhas/list?${paginationString}${queryString}`);
   }
 
   async getCampaignGeneralInfo(
