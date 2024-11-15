@@ -11,8 +11,14 @@ export class CustomerService {
     this.api = api;
   }
 
-  async getCustomers({ page, pageSize = 10, sort }: FetchCustomerOptions) {
+  async getCustomers({
+    page,
+    pageSize = 10,
+    sort,
+    filterName,
+  }: FetchCustomerOptions) {
     let sortString = "";
+    let filterString = "";
     const contractRelation = `&populate[contratos]=true`;
     const pagination = `pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
 
@@ -27,8 +33,10 @@ export class CustomerService {
       }
     }
 
+    if (filterName) filterString = `&filters[nome][$containsi]=${filterName}`;
+
     return this.api.get(
-      `clientes?${pagination}${contractRelation}${sortString}`
+      `clientes?${pagination}${contractRelation}${sortString}${filterString}`
     );
   }
 

@@ -13,6 +13,17 @@ export interface ApiCampaign {
   };
 }
 
+export interface ApiListCampaignResponse {
+  nome: string;
+  status: string;
+  total_clicks: number;
+  total_conversoes: number;
+  total_impressoes: number;
+  total_custo: number;
+  total_ctr: number;
+  custo_por_conversao: number;
+}
+
 export interface ApiCampaignReport {
   id: number;
   attributes: {
