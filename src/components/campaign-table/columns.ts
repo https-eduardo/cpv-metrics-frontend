@@ -1,19 +1,19 @@
 import { h } from "vue";
-import { ApiCampaign } from "@/types/campaign";
+import { ApiListCampaignResponse } from "@/types/campaign";
 import { ColumnDef } from "@tanstack/vue-table";
 import Button from "../ui/button/Button.vue";
 import { ArrowUpDown } from "lucide-vue-next";
-import { formatPercent } from "@/lib/utils";
+import { formatNumber, formatPercent } from "@/lib/utils";
 
 const SortButtonStyle = "pl-0 hover:bg-accent-none";
 
-export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
+export const columnsCampaign: ColumnDef<ApiListCampaignResponse>[] = [
   {
-    accessorKey: "attributes.campanha",
+    accessorKey: "nome",
     header: () => "Campanha",
   },
   {
-    accessorKey: "attributes.status",
+    accessorKey: "status",
     header: ({ column }) => {
       return h(
         Button,
@@ -32,11 +32,11 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         ]
       );
     },
-    cell: ({ row }) => h("div", { class: "" }, row.original.attributes.status),
+    cell: ({ row }) => h("div", { class: "" }, row.original.status),
   },
 
   {
-    accessorKey: "attributes.relatorios.custo",
+    accessorKey: "total_custo",
     header: ({ column }) => {
       return h(
         Button,
@@ -56,7 +56,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
       );
     },
     cell: ({ row }) => {
-      const cost = 0;
+      const cost = row.original.total_custo;
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -66,7 +66,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
   },
 
   {
-    accessorKey: "attributes.relatorios.conversao",
+    accessorKey: "total_conversoes",
     header: ({ column }) => {
       return h(
         Button,
@@ -85,17 +85,15 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         ]
       );
     },
-    cell: ({ row }: { row: { original: ApiCampaign } }) => {
-      const conversao =
-        row.original.attributes.relatorio_campanhas?.data?.[0]?.attributes
-          ?.conversoes ?? 0;
+    cell: ({ row }) => {
+      const conversao = Number(row.original.total_conversoes);
 
-      return h("div", { class: "" }, conversao);
+      return h("div", { class: "" }, formatNumber(conversao));
     },
   },
 
   {
-    accessorKey: "attributes.relatorios.custoPorConversao",
+    accessorKey: "custo_por_conversao",
     header: ({ column }) => {
       return h(
         Button,
@@ -115,7 +113,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
       );
     },
     cell: ({ row }) => {
-      const costPerConversion = 0;
+      const costPerConversion = row.original.custo_por_conversao;
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
@@ -125,7 +123,7 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
   },
 
   {
-    accessorKey: "attributes.relatorios.cliques",
+    accessorKey: "total_clicks",
     header: ({ column }) => {
       return h(
         Button,
@@ -144,17 +142,15 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         ]
       );
     },
-    cell: ({ row }: { row: { original: ApiCampaign } }) => {
-      const cliques =
-        row.original.attributes.relatorio_campanhas?.data?.[0]?.attributes
-          ?.clicks ?? 0;
+    cell: ({ row }) => {
+      const clicks = Number(row.original.total_clicks);
 
-      return h("div", { class: "" }, cliques);
+      return h("div", { class: "" }, formatNumber(clicks));
     },
   },
 
   {
-    accessorKey: "attributes.relatorios.ctr",
+    accessorKey: "total_ctr",
     header: ({ column }) => {
       return h(
         Button,
@@ -173,10 +169,8 @@ export const columnsCampaign: ColumnDef<ApiCampaign>[] = [
         ]
       );
     },
-    cell: ({ row }: { row: { original: ApiCampaign } }) => {
-      const ctr =
-        row.original.attributes.relatorio_campanhas?.data?.[0]?.attributes
-          ?.ctr ?? 0;
+    cell: ({ row }) => {
+      const ctr = Number(row.original.total_ctr);
 
       return h("div", { class: "" }, formatPercent(ctr));
     },

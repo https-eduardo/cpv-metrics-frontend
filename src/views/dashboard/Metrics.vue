@@ -4,7 +4,7 @@
     <div class="p-8">
       <h1 class="text-3xl font-bold text-white">Métricas</h1>
       <div class="flex w-full gap-2 justify-end mb-8">
-        <MetricsFilter v-model="filters" />
+        <!-- <MetricsFilter v-model="filters" /> -->
         <StatusFilter v-model="statusFilter" />
       </div>
       <div class="flex gap-12 flex-wrap">

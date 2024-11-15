@@ -19,7 +19,14 @@
         <DashboardCard title="Custo/conv." :value="costPerConversion" />
       </div>
       <div class="py-10">
-        <h2 class="text-2xl font-bold text-white mb-2">Campanhas</h2>
+        <div class="flex justify-between py-2 items-center">
+          <h2 class="text-2xl font-bold text-white mb-2">Campanhas</h2>
+          <Input
+            class="max-w-48"
+            placeholder="Buscar por campanha"
+            v-model="filterName"
+          />
+        </div>
         <DataTable
           :columns="columnsCampaign"
           :data="data"
@@ -41,19 +48,21 @@ import DashboardCard from "@/components/dashboard/Card.vue";
 import StatusCampaignFilter from "@/components/dashboard/StatusCampaignFilter.vue";
 import { formatMoney, formatNumber } from "@/lib/utils";
 import { campaignsService } from "@/services";
-import { ApiCampaign } from "@/types/campaign";
+import { ApiListCampaignResponse } from "@/types/campaign";
 import DataTable from "@/components/campaign-table/DataTable.vue";
 import { columnsCampaign } from "../../components/campaign-table/columns.ts";
 import { useRouter } from "vue-router";
-import { SortingOption } from "@/types/common.ts";
 import PeriodFilter from "@/components/dashboard/PeriodFilter.vue";
+import Input from "@/components/ui/input/Input.vue";
 
 const { currentRoute, push } = useRouter();
 
-const data = ref<ApiCampaign[]>([]);
+const data = ref<ApiListCampaignResponse[]>([]);
 const totalPages = ref<number>(0);
+const filterName = ref("");
 const currentPage = ref<number>(1);
-const sort = ref<SortingOption>({});
+const sort = ref("");
+const sortOrder = ref("");
 const loading = ref<boolean>(true);
 
 const statusCampaignFilter = ref<"all" | "active">("active");
@@ -72,8 +81,15 @@ const conversionCount = computed(() => formatNumber(state.conversionCount));
 const cost = computed(() => formatMoney(state.cost));
 const costPerConversion = computed(() => formatMoney(state.costPerConversion));
 
-async function getData(page: number, sort: SortingOption) {
-  // return await campaignsService.getCampaigns({ page, sort });
+async function getData() {
+  return await campaignsService.getCampaignList(
+    currentPage.value,
+    periodFilter.value,
+    statusCampaignFilter.value,
+    filterName.value,
+    sort.value,
+    sortOrder.value
+  );
 }
 
 const handlePageChange = (page: number) => {
@@ -89,34 +105,21 @@ const handlePageChange = (page: number) => {
 
 const handleSorting = (sorting: Ref<Record<string, any>[]>) => {
   const sortItem = sorting.value[0];
-  let fieldName = sortItem.id.split("_").at(-1);
-  const reportFields = [
-    "status",
-    "custo",
-    "conversao",
-    "custoPorConversao",
-    "cliques",
-    "ctr",
-  ];
 
-  sort.value = {
-    [fieldName]: {
-      order: sortItem.desc ? "desc" : "asc",
-      relation: reportFields.includes(fieldName) ? "relatorios" : undefined,
-    },
-  };
+  sort.value = sortItem.id;
+  sortOrder.value = sortItem.desc ? "desc" : "asc";
   loading.value = true;
 };
 
-// async function updateData() {
-//   const {
-//     data: { data: campaigns, meta },
-//   } = await getData(currentPage.value, sort.value);
+async function updateData() {
+  const {
+    data: { data: campaigns, pagination },
+  } = await getData();
 
-//   totalPages.value = meta.pagination.pageCount;
-//   data.value = campaigns;
-//   loading.value = false;
-// }
+  totalPages.value = Number(pagination.pageCount);
+  data.value = campaigns;
+  loading.value = false;
+}
 
 const fetchGeneralInfo = async () => {
   const { data } = await campaignsService.getCampaignGeneralInfo(
@@ -130,25 +133,41 @@ const fetchGeneralInfo = async () => {
   state.costPerConversion = data.cost / data.conversions;
 };
 
-// watch(currentPage, () => {
-//   updateData();
-// });
+watch(currentPage, () => {
+  updateData();
+});
 
-// watch(sort, () => {
-//   updateData();
-// });
+watch(sort, () => {
+  updateData();
+});
+
+watch(filterName, () => {
+  updateData();
+});
+
+watch(statusCampaignFilter, () => {
+  updateData();
+});
+
+watch(sort, () => {
+  updateData();
+});
+
+watch(sortOrder, () => {
+  updateData();
+});
 
 onMounted(async () => {
   fetchGeneralInfo();
-  // fetchCampaigns();
+  updateData();
   handlePageChange(Number(currentRoute.value.query.page) || 1);
-  // updateData();
 });
 
 watch(
   periodFilter,
   () => {
     fetchGeneralInfo();
+    updateData();
   },
   { deep: true }
 );

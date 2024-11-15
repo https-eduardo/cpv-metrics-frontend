@@ -42,4 +42,5 @@ export interface FetchCustomerOptions {
   page: number;
   pageSize?: number;
   sort?: SortingOption;
+  filterName?: string;
 }
